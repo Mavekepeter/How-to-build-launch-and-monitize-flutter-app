@@ -1,4 +1,4 @@
-import 'package:chattera/features/auth/presentation/pages/login_page.dart';
+import 'package:chattera/features/auth/presentation/pages/auth_page.dart';
 import 'package:chattera/firebase_options.dart';
 import 'package:chattera/themes/dark_mode.dart';
 import 'package:chattera/themes/light_mode.dart';
@@ -20,8 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const LoginPage(),
-      theme: darkMode,
+      home: AuthPage(),
+      theme: lightMode,
+      darkTheme: darkMode,
     );
   }
 }

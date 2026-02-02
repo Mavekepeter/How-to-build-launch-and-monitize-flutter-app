@@ -1,25 +1,22 @@
-/*
-LOGIN PAGE UI
-*/
-
 import 'package:chattera/features/auth/presentation/components/my_button.dart';
 import 'package:chattera/features/auth/presentation/components/my_textfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  final void Function()? togglePages;
+class RegisterPage extends StatefulWidget {
+  final void Function()? togglePage;
 
-  const LoginPage({super.key, required this.togglePages});
+  const RegisterPage({super.key,required this.togglePage});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  //text controller
+class _RegisterPageState extends State<RegisterPage> {
+  //text controlers
   final emailController = TextEditingController();
   final pwController = TextEditingController();
-
+  final ConfirmPwController = TextEditingController();
   //BUILD UI
   @override
   Widget build(BuildContext context) {
@@ -42,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 25),
               //name of app
               Text(
-                "BUILD LAUNCH MONITIZE",
+                "Let's create account for you",
                 style: TextStyle(
                   fontSize: 16,
                   color: Theme.of(context).colorScheme.inversePrimary,
@@ -65,23 +62,18 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: "Password",
                 obscureText: true,
               ),
-              //forget pw
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    "forgot password",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 10),
+
+              //Confirmpw textfield
+              MyTextfield(
+                controller: ConfirmPwController,
+                hintText: "Confirm Password",
+                obscureText: true,
               ),
 
               const SizedBox(height: 25),
               //login Button
-              MyButton(onTap: () {}, text: "Login"),
+              MyButton(onTap: () {}, text: "Sign Up"),
 
               const SizedBox(height: 25),
               //auth sign in later
@@ -91,16 +83,15 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have an account",
+                    "Already have an account",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-
                   GestureDetector(
-                    onTap: widget.togglePages,
+                    onTap: widget.togglePage,
                     child: Text(
-                      "Register now",
+                      "Login now",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.primary,
