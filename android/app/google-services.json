@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "908350405325",
+    "project_id": "chattera-fd4bb",
+    "storage_bucket": "chattera-fd4bb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908350405325:android:52e8d7459621fd478e4784",
+        "android_client_info": {
+          "package_name": "com.example.chattera"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLFMEyq-op099Jx0OND-KjblYBRLQgoq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
