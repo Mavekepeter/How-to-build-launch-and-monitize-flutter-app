@@ -1,12 +1,13 @@
 import 'package:chattera/features/auth/presentation/components/my_button.dart';
 import 'package:chattera/features/auth/presentation/components/my_textfield.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:chattera/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
   final void Function()? togglePage;
 
-  const RegisterPage({super.key,required this.togglePage});
+  const RegisterPage({super.key, required this.togglePage});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -14,9 +15,53 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   //text controlers
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final pwController = TextEditingController();
-  final ConfirmPwController = TextEditingController();
+  final confirmPwController = TextEditingController();
+
+  //register button  pressed
+  void register() {
+    final String name = nameController.text.trim();
+    final String email = emailController.text.trim();
+    final String pw = pwController.text.trim();
+    final String confirmPw = confirmPwController.text.trim();
+
+    //auth cubit
+    final authCubit = context.read<AuthCubit>();
+    //ensure fields aren't empty
+    if (email.isNotEmpty &&
+        name.isNotEmpty &&
+        pw.isNotEmpty &&
+        confirmPw.isNotEmpty) {
+      //ensure pw match
+      if (pw == confirmPw) {
+        authCubit.register(name, email, pw);
+      }
+      //pw doesn't match
+      else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Passwords do not match")));
+      }
+    }
+    //fields are empty -> display error
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please complete all fields")),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    pwController.dispose();
+    confirmPwController.dispose();
+    super.dispose();
+  }
+
   //BUILD UI
   @override
   Widget build(BuildContext context) {
@@ -50,6 +95,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
               //email textfield
               MyTextfield(
+                controller: nameController,
+                hintText: "name",
+                obscureText: false,
+              ),
+
+              const SizedBox(height: 25),
+
+              //email textfield
+              MyTextfield(
                 controller: emailController,
                 hintText: "Email",
                 obscureText: false,
@@ -66,14 +120,18 @@ class _RegisterPageState extends State<RegisterPage> {
 
               //Confirmpw textfield
               MyTextfield(
-                controller: ConfirmPwController,
+                controller: confirmPwController,
                 hintText: "Confirm Password",
                 obscureText: true,
               ),
 
               const SizedBox(height: 25),
-              //login Button
-              MyButton(onTap: () {}, text: "Sign Up"),
+
+              //register Button
+              MyButton(
+                onTap: register, 
+                text: "Sign Up"
+                ),
 
               const SizedBox(height: 25),
               //auth sign in later
