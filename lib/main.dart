@@ -1,4 +1,5 @@
 import 'package:chattera/features/auth/data/firebase_auth_repo.dart';
+import 'package:chattera/features/auth/presentation/components/loading.dart';
 import 'package:chattera/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:chattera/features/auth/presentation/cubits/auth_state.dart';
 import 'package:chattera/features/auth/presentation/pages/auth_page.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
             }
             //loading
             else {
-              return Center(child: CircularProgressIndicator());
+              return const LoadingScreen();
             }
           },
 
