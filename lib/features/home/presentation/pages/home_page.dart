@@ -1,6 +1,5 @@
-import 'package:chattera/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:chattera/components/drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,23 +8,45 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  //Tab controller
+  late final _tabController = TabController(length: 3, vsync: this);
+
+  // BUILD UI
   @override
   Widget build(BuildContext context) {
+
+    //SCAFFORD
     return Scaffold(
+
+      //APP BAR
       appBar: AppBar(
         title: Text("Home"),
-        actions: [
-          //logout button
-          IconButton(
-            onPressed: () {
-              final authCubit = context.read<AuthCubit>();
-              authCubit.logout();
-            },
-            icon: const Icon(Icons.logout),
+        bottom: TabBar(
+          controller: _tabController,
+          dividerColor: Colors.transparent,
+          labelColor: Theme.of(context).colorScheme.inversePrimary,
+          unselectedLabelColor: Theme.of(context).colorScheme.primary,
+          tabs: const [
+            Tab(text: "Build",),
+            Tab(text: "Laucnch",),
+            Tab(text: "Monitize",),
+          ],
           ),
-        ],
+
+          // NEW POST BUTTON
+          actions: [
+            IconButton(
+              onPressed: () {}, 
+              icon: Icon(Icons.add),
+              ),
+          ],
+
       ),
+
+      //DRAWER
+      drawer: MyDrawer(),
     );
   }
 }
