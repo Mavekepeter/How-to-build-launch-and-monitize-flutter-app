@@ -32,7 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   //lo gin with email + pw
-  Future<void> login( String email, String pw) async {
+  Future<void> login(String email, String pw) async {
     try {
       emit(AuthLoading());
       final user = await authRepo.loginWithEmailPassword(email, pw);
@@ -50,7 +50,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   //Register with email +pw
-  Future<void> register(String name, String email,String pw) async {
+  Future<void> register(String name, String email, String pw) async {
     try {
       emit(AuthLoading());
       final user = await authRepo.registerWithEmailPassword(name, email, pw);
@@ -89,6 +89,42 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthLoading());
       await authRepo.deleteAccount();
       emit(Unauthenticated());
+    } catch (e) {
+      emit(AuthError(e.toString()));
+      emit(Unauthenticated());
+    }
+  }
+
+  //Apple sign in
+  Future<void> signInwithApple() async {
+    try {
+      emit(AuthLoading());
+      final user = await authRepo.signInWithApple();
+
+      if (user != null) {
+        _currentUser = user;
+        emit(Authenticated(user));
+      } else {
+        emit(Unauthenticated());
+      }
+    } catch (e) {
+      emit(AuthError(e.toString()));
+      emit(Unauthenticated());
+    }
+  }
+
+  //Google sign In
+  Future<void> signInWithGoogle() async {
+   try {
+      emit(AuthLoading());
+      final user = await authRepo.signInWithGoogle();
+
+      if (user != null) {
+        _currentUser = user;
+        emit(Authenticated(user));
+      } else {
+        emit(Unauthenticated());
+      }
     } catch (e) {
       emit(AuthError(e.toString()));
       emit(Unauthenticated());

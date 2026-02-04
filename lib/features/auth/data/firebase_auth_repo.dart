@@ -5,6 +5,7 @@ FIREBASE BACKEND
 import 'package:chattera/features/auth/domain/entities/app_user.dart';
 import 'package:chattera/features/auth/domain/repos/auth_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthRepo implements AuthRepo {
   ///access to firebase
@@ -92,6 +93,32 @@ class FirebaseAuthRepo implements AuthRepo {
       return "password reset email sent! Check your inbox";
     } catch (e) {
       return "An error occured: $e";
+    }
+  }
+
+  //APPLE SIGN IN
+
+  @override
+  Future<AppUser?> signInWithApple() async {
+    // TODO: implement signInWithApple
+    throw UnimplementedError();
+  }
+
+  //GOOGLE SIGN IN
+  @override
+  Future<AppUser?> signInWithGoogle() async {
+    try {
+      final googleProvider = GoogleAuthProvider();
+
+      final UserCredential userCredential = await firebaseAuth
+          .signInWithProvider(googleProvider);
+
+      final user = userCredential.user;
+      if (user == null) return null;
+
+      return AppUser(uid: user.uid, email: user.email ?? '');
+    } catch (e) {
+      throw Exception('Google sign-in failed: $e');
     }
   }
 }

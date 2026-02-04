@@ -12,7 +12,20 @@
           "package_name": "com.example.chattera"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "908350405325-67v5th11hg0foe4ufqhs9pajs00fpab3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chattera",
+            "certificate_hash": "4c541d1a5fe37505c533dd58139dab10da4fd9f7"
+          }
+        },
+        {
+          "client_id": "908350405325-kb2geo65b70smnqdh4jh5pg61pjk48ud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDLFMEyq-op099Jx0OND-KjblYBRLQgoq4"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908350405325-kb2geo65b70smnqdh4jh5pg61pjk48ud.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "908350405325-dr4nj9bl2klr0jt44bj6num4e8h3pem0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chattera"
+              }
+            }
+          ]
         }
       }
     }

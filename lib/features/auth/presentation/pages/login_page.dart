@@ -2,6 +2,8 @@
 LOGIN PAGE UI
 */
 
+import 'package:chattera/features/auth/presentation/components/apple_sign_in_button.dart';
+import 'package:chattera/features/auth/presentation/components/google_sign_in_button.dart';
 import 'package:chattera/features/auth/presentation/components/my_button.dart';
 import 'package:chattera/features/auth/presentation/components/my_textfield.dart';
 import 'package:chattera/features/auth/presentation/cubits/auth_cubit.dart';
@@ -83,93 +85,134 @@ class _LoginPageState extends State<LoginPage> {
     //SCAFFORD
     return Scaffold(
       //BODY
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //LOGO
-              Icon(
-                Icons.lock_open,
-                size: 80,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-
-              const SizedBox(height: 25),
-              //name of app
-              Text(
-                "BUILD LAUNCH MONITIZE",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                //LOGO
+                Icon(
+                  Icons.lock_open,
+                  size: 80,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-              ),
 
-              const SizedBox(height: 25),
+                const SizedBox(height: 25),
+                //name of app
+                Text(
+                  "BUILD LAUNCH MONITIZE",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
+                ),
 
-              //email textfield
-              MyTextfield(
-                controller: emailController,
-                hintText: "Email",
-                obscureText: false,
-              ),
+                const SizedBox(height: 25),
 
-              const SizedBox(height: 10),
-              //pw textfield
-              MyTextfield(
-                controller: pwController,
-                hintText: "Password",
-                obscureText: true,
-              ),
-              //forget pw
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: ()=>openForgetPasswordBox(),
-                    child: Text(
-                      "forgot password",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
+                //email textfield
+                MyTextfield(
+                  controller: emailController,
+                  hintText: "Email",
+                  obscureText: false,
+                ),
+
+                const SizedBox(height: 10),
+                //pw textfield
+                MyTextfield(
+                  controller: pwController,
+                  hintText: "Password",
+                  obscureText: true,
+                ),
+                //forget pw
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () => openForgetPasswordBox(),
+                      child: Text(
+                        "forgot password",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
 
-              const SizedBox(height: 25),
-              //login Button
-              MyButton(onTap: login, text: "Login"),
+                const SizedBox(height: 25),
+                //login Button
+                MyButton(onTap: login, text: "Login"),
 
-              const SizedBox(height: 25),
-              //auth sign in later
-
-              //dont have an account?register now
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
+                const SizedBox(height: 25),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
                     ),
-                  ),
 
-                  GestureDetector(
-                    onTap: widget.togglePages,
-                    child: Text(
-                      "Register now",
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Text("Or Sign in with"),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 25),
+
+                //auth sign (apple + google)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //apple button
+                    MyAppleSignInButton(),
+
+                    const SizedBox(width: 20),
+
+                    //google button
+                    MyGoogleSignInButton(
+                      onTap: () async {
+                        authCubit.signInWithGoogle();
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 25),
+
+                //dont have an account?register now
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't have an account",
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+
+                    GestureDetector(
+                      onTap: widget.togglePages,
+                      child: Text(
+                        "Register now",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 25),
+              ],
+            ),
           ),
         ),
       ),
