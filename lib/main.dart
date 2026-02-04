@@ -3,6 +3,8 @@ import 'package:chattera/features/auth/presentation/components/loading.dart';
 import 'package:chattera/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:chattera/features/auth/presentation/cubits/auth_state.dart';
 import 'package:chattera/features/auth/presentation/pages/auth_page.dart';
+import 'package:chattera/features/home/data/firebase_post_repo.dart';
+import 'package:chattera/features/home/presentation/cubits/post_cubit.dart';
 import 'package:chattera/features/home/presentation/pages/home_page.dart';
 import 'package:chattera/firebase_options.dart';
 import 'package:chattera/themes/dark_mode.dart';
@@ -25,6 +27,9 @@ class MyApp extends StatelessWidget {
   //auth repo
   final firebaseAuthRepo = FirebaseAuthRepo();
 
+  //post repo
+  final firebasePostRepo = FirebasePostRepo();
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -35,6 +40,10 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               AuthCubit(authRepo: firebaseAuthRepo)..checkAuth(),
         ),
+
+        //post cubit
+        BlocProvider<PostCubit>(create: (context) => PostCubit(postRepo: firebasePostRepo),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
