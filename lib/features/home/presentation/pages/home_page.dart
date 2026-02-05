@@ -1,7 +1,11 @@
 import 'package:chattera/components/drawer.dart';
 import 'package:chattera/features/auth/presentation/components/my_textfield.dart';
 import 'package:chattera/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:chattera/features/home/domain/entities/post.dart';
+import 'package:chattera/features/home/presentation/components/post_tile.dart';
 import 'package:chattera/features/home/presentation/cubits/post_cubit.dart';
+import 'package:chattera/features/home/presentation/cubits/post_states.dart';
+import 'package:chattera/features/home/presentation/pages/post_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +20,17 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   //Tab controller
   late final _tabController = TabController(length: 3, vsync: this);
+
+  //cubits
+  late final postCubit = context.read<PostCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    //load posts initially
+    postCubit.loadPosts();
+  }
 
   //add new post to a given category
   void addPost() {
@@ -87,14 +102,76 @@ class _HomePageState extends State<HomePage>
                 );
 
                 // pop box
-              Navigator.pop(context);
-
+                Navigator.pop(context);
               }
             },
             child: const Text("post"),
           ),
         ],
       ),
+    );
+  }
+
+  //delete post
+  void deletePost(String id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Delete post"),
+        actions: [
+          //cancel button
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          //delete button
+          TextButton(
+            onPressed: () {
+              postCubit.deletePost(id);
+              Navigator.pop(context);
+            },
+            child: const Text("Delete"),
+          ),
+        ],
+      ),
+    );
+  }
+  //Build list of posts for agiven caegory
+
+  Widget _buildCategoryPosts(String category, List<Post> posts) {
+    //filter posts for this category
+    final postsInThisCategory = posts
+        .where((post) => post.category == category)
+        .toList();
+
+    //posts are empty
+    if (postsInThisCategory.isEmpty) {
+      return const Center(child: Text("No posts is here yet.."));
+    }
+    //list of posts(for this category)
+    return ListView.builder(
+      itemCount: postsInThisCategory.length,
+      itemBuilder: (context, index) {
+        //get individual posts
+        final post = postsInThisCategory[index];
+
+        //post title
+        return PostTile(
+          post: post,
+          onDelete: () => deletePost(post.id),
+          onTap: () {
+            //navigate to my post page
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>  PostPage(
+                  post: post,
+                ),
+                )
+              );
+          },
+        );
+      },
     );
   }
 
@@ -124,6 +201,36 @@ class _HomePageState extends State<HomePage>
 
       //DRAWER
       drawer: MyDrawer(),
+
+      //Body
+      body: BlocBuilder<PostCubit, PostStates>(
+        builder: (context, state) {
+          print(state);
+          //loaded
+          if (state is PostsLoaded) {
+            return TabBarView(
+              controller: _tabController,
+              children: [
+                _buildCategoryPosts("Build", state.posts),
+                _buildCategoryPosts("Launch", state.posts),
+                _buildCategoryPosts("Monetize", state.posts),
+              ],
+            );
+          }
+          //loading
+          if (state is PostLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          //error
+          if (state is PostError) {
+            return Center(child: Text(state.message));
+          }
+
+          //fallback default
+          return const SizedBox();
+        },
+      ),
     );
   }
 }

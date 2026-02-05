@@ -11,7 +11,9 @@ class PostLoading extends PostStates {}
 //loaded with posts
 class PostsLoaded extends PostStates {
   final List<Post> posts;
-  PostsLoaded(this.posts);
+  final Map<String, int> commentCounts;
+
+  PostsLoaded(this.posts, {required this.commentCounts});
 }
 
 //error state
@@ -21,7 +23,7 @@ class PostError extends PostStates {
 }
 
 //post create Successfully
-class PostCreated extends PostStates{}
+class PostCreated extends PostStates {}
 
 //post deleted successfully
-class PostDeleted extends PostStates{}
+class PostDeleted extends PostStates {}
